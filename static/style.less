@@ -451,7 +451,7 @@ body.bookmarks{
 				display: block;
 			}
 
-			.delete{
+			.delete, .save{
 				display: none;
 			}
 
@@ -469,11 +469,14 @@ body.bookmarks{
 					display: none;
 				}
 
-				.delete{
-					float: right;
+				.delete, .save{
 					vertical-align: middle;
 					color: @red;
-					display: block;
+					display: inline-block;
+				}
+				.save{
+					color: @green;
+					margin-left: 10px;
 				}
 			}
 
