@@ -127,26 +127,110 @@ input {
 	}
 }
 
+.wrapper{
+	display: table;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	table-layout: fixed;
+	vertical-align: middle;
+	text-align: center;
+	
+	.inner-wrapper{
+		width: 100%;
+		position: relative;
+		display: table-cell;
+		vertical-align: middle;
+	}
+}
+
+body.landing{
+	background: @black;
+	color: #fff;
+	font-family: "Brandon Grotesque", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+	
+	.logo{
+		opacity: 1;
+	}
+
+	.main{
+		width: 80%;
+		margin: auto;
+		text-align: center;
+		
+		.call{
+			margin-top: 241px;
+			margin-bottom: 158px;
+		}
+		
+		h1{
+			font-weight: 700;
+			font-size: 20px;
+		}
+		a.action{
+			text-transform: none;
+			padding: 4px 0;
+			font-size: 16px;
+			border-bottom: 1px solid rgba(255,255,255,.2);
+			margin-top: 15px;
+			display: inline-block;
+
+			&:last-child{
+				margin-left: 20px;
+			}
+
+			.transition(.1s, ease);
+			
+			&:hover{
+				border-bottom: 1px solid rgba(255,255,255,1);
+			}
+		}
+
+		.screenshot{
+			width: 100%;
+			margin-top: 158px;
+			
+			img{
+				width: 100%;
+				max-width: 970px;
+			}
+		}
+
+	}
+
+	footer{
+		text-align: center;
+		margin-top: 166px;
+		margin-bottom: 166px;
+		
+		ul li{
+			display: inline-block;
+			font-weight: 700;
+			margin-right: 20px;
+			font-size: 14px;
+			
+			a{
+				color: rgba(255,255,255,.2);
+				
+				&:hover{
+					color: rgba(255,255,255,.4);
+				}
+			}
+			a.create{
+				color: rgba(255,255,255,.8);
+				
+				&:hover{
+					color: rgba(255,255,255,1);
+				}
+			}
+		}
+	}
+}
+
 body.login{
 	background: @black;
 	color: #fff;
-
-	.wrapper{
-		display: table;
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		table-layout: fixed;
-		vertical-align: middle;
-		text-align: center;
-		
-		.inner-wrapper{
-			width: 100%;
-			position: relative;
-			display: table-cell;
-			vertical-align: middle;
-		}
-	}
 
 	.actualform{
 		width: 80%;
@@ -197,10 +281,16 @@ body.login{
 				background: transparent;
 				border: none;
 				margin: 0;
-				padding: 10px 0;
+				padding: 2px 0;
 				color: #fff;
 				cursor: pointer;
-				font-weight: 700;
+				border-bottom: 1px solid rgba(255,255,255,.2);
+				margin-top: 8px;
+				.transition(.2s, ease);
+				
+				&:hover{
+					border-bottom: 1px solid rgba(255,255,255,.5);
+				}
 			}
 		}
 	}
@@ -350,12 +440,15 @@ body.bookmarks{
 
 		ul.bookmarks li{
 			margin-top: 46px;
+			padding-left: 38px;
+			margin-left: -38px;
+			position: relative;
 
 			a:hover{
 			}
 
 			&:hover .edit{
-				display: inline;
+				display: block;
 			}
 
 			.delete{
@@ -384,6 +477,23 @@ body.bookmarks{
 				}
 			}
 
+			.edit{
+				display: none;
+				position: absolute;
+				left: 0;
+				top: 10px;
+
+				img{
+					width: 18px;
+					height: 18px;
+					opacity: .2;
+
+					&:hover{
+						opacity: .4;
+					}
+				}
+			}
+
 			h1, .h1{
 				font-size: 30px;
 				line-height: 36px;
@@ -393,21 +503,6 @@ body.bookmarks{
 
 				a:hover{
 					color: @green;
-				}
-
-				.edit{
-					display: none;
-
-					img{
-						width: 18px;
-						height: 18px;
-						margin-left: 12px;
-						opacity: .2;
-
-						&:hover{
-							opacity: .4;
-						}
-					}
 				}
 			}
 			h2, h3, .h2, .h3, .delete{
@@ -445,16 +540,17 @@ body.bookmarks{
 			ul.bookmarks li{
 				margin-top: 32px;
 
+				.edit{
+					top: 3px;
+				}
+				.edit img{
+					width: 16px;
+					height: 16px;
+				}
 				h1{
 					font-size: 20px;
 					line-height: 24px;
 					margin-bottom: 1px;
-
-					.edit img{
-						width: 16px;
-						height: 16px;
-						margin-left: 6px;
-					}
 				}
 				h2{
 					display: none;
