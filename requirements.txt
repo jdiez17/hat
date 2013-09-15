@@ -1,0 +1,15 @@
+Flask==0.10.1
+Flask-Bcrypt==0.5.2
+Flask-Classy==0.6.3
+Flask-Login==0.2.7
+Flask-SQLAlchemy==1.0
+Jinja2==2.7.1
+MarkupSafe==0.18
+MySQL-python==1.2.4
+SQLAlchemy==0.8.2
+Werkzeug==0.9.4
+argparse==1.2.1
+distribute==0.6.34
+itsdangerous==0.23
+py-bcrypt==0.4
+wsgiref==0.1.2
