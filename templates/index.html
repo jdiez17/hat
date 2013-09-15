@@ -1,83 +1,62 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title>Hat &mdash; Bookmarks</title>
-	<meta name="description" content="" />
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<!-- <link rel="stylesheet" href="static/style.css" media="screen" /> -->
-	<link rel="stylesheet/less" type="text/css" href="static/style.less" />
-	<link rel="icon" href="static/images/favicon.png" />
-	<script src="static/js/zepto.min.js"></script>
-	<script src="static/js/base.js"></script>
-	<script src="static/js/less-1.3.3.min.js"></script>
+    <title>Hat &mdash; Bookmarks</title>
+    <meta name="description" content="" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="static/style.css" media="screen" /> -->
+    <link rel="stylesheet/less" type="text/css" href="static/style.less" />
+    <link rel="icon" href="static/images/favicon.png" />
+    <script src="static/js/zepto.min.js"></script>
+    <script src="static/js/base.js"></script>
+    <script src="static/js/less-1.3.3.min.js"></script>
 </head>
 <body class="bookmarks">
 
-	<div class="sidebar">
-		<input type="text" placeholder="Search">
-		<div class="section tags">
-			<h1>Tags</h1>
-			<ul>
-				<li>Cats</li>
-				<li>Cupcakes</li>
-				<li>Lorem ipsum</li>
-			</ul>
-		</div>
+    <div class="sidebar">
+        <input type="text" placeholder="Search">
+        <div class="section tags">
+            <h1>Tags</h1>
+            <ul>
+                <li>Cats</li>
+                <li>Cupcakes</li>
+                <li>Lorem ipsum</li>
+            </ul>
+        </div>
 
-		<!-- <div class="section settings">
-			<h1>Settings</h1>
-		</div> -->
+        <!-- <div class="section settings">
+            <h1>Settings</h1>
+        </div> -->
 
-		<div class="section">
-			<span class="logo"></span>
-		</div>
-	</div>
+        <div class="section">
+            <span class="logo"></span>
+        </div>
+    </div>
 
-	<div class="main">
-		<input id="url" type="url" placeholder="http://">
-		<div class="full">
-			<input type="text" placeholder="A somewhat descriptive title">
-			<input type="text" class="tags" placeholder="tags, separated, like, this">
-		</div>
-		<ul class="bookmarks">
-			<li class="editable">
-				<input type="text" class="h1 editing" placeholder="A somewhat descriptive title">
-				<input type="url" class="h2 editing">
-				<input type="text" class="h3 editing" placeholder="tags, separated, like, this">
-				<a href="#" class="delete">Delete</a>
-			</li>
-			<li>
-				<a href="#" class="edit"><img src="static/images/edit.png"></a><h1><a href="#">Cupcake ipsum dolor sit amet gingerbread bear claw cupcake ipsum dolor sit amet</a></h1>
-				<h2><a href="#">http://cupcakeipsum.com/</a></h2>
-				<h3>lorem ipsum, cupcakes</h3>
-			</li>
-
-			<li>
-				<a href="#" class="edit"><img src="static/images/edit.png"></a><h1><a href="#">Cupcake ipsum dolor sit amet gingerbread bear claw</a></h1>
-				<h2><a href="#">http://cupcakeipsum.com/</a></h2>
-				<h3>lorem ipsum, cupcakes</h3>
-			</li>
-
-			<li>
-				<a href="#" class="edit"><img src="static/images/edit.png"></a><h1><a href="#">Cupcake ipsum dolor sit amet gingerbread bear claw</a></h1>
-				<h2><a href="#">http://cupcakeipsum.com/</a></h2>
-				<h3>lorem ipsum, cupcakes</h3>
-			</li>
-
-			<li>
-				<a href="#" class="edit"><img src="static/images/edit.png"></a><h1><a href="#">Cupcake ipsum dolor sit amet gingerbread bear claw</a></h1>
-				<h2><a href="#">http://cupcakeipsum.com/</a></h2>
-				<h3>lorem ipsum, cupcakes</h3>
-			</li>
-
-			<li>
-				<a href="#" class="edit"><img src="static/images/edit.png"></a><h1><a href="#">Cupcake ipsum dolor sit amet gingerbread bear claw</a></h1>
-				<h2><a href="#">http://cupcakeipsum.com/</a></h2>
-				<h3>lorem ipsum, cupcakes</h3>
-			</li>
-		</ul>
-	</div>
+    <div class="main">
+        <input id="url" type="url" placeholder="http://">
+        <div class="full">
+            <input type="text" placeholder="A somewhat descriptive title">
+            <input type="text" class="tags" placeholder="tags, separated, like, this">
+        </div>
+        <ul class="bookmarks">
+            <li class="editable">
+                <input type="text" class="h1 editing" placeholder="A somewhat descriptive title">
+                <input type="url" class="h2 editing">
+                <input type="text" class="h3 editing" placeholder="tags, separated, like, this">
+                <a href="#" class="delete">Delete</a>
+            </li>
+          
+            {% for link in links %}
+            <li>
+            <a href="#" class="edit"><img src="/static/images/edit.png"></a><h1><a href="{{ link.link }}">{{ link.title }}</a></h1>
+                <h2><a href="{{ link.link }}">{{ link.link }}</a></h2>
+                <h3>lorem ipsum, cupcakes</h3>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 
 </body>
 </html>
