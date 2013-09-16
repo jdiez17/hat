@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title>Hat &mdash; Login</title>
-	<meta name="description" content="" />
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<!-- <link rel="stylesheet" href="static/style.css" media="screen" /> -->
-	<link rel="stylesheet/less" type="text/css" href="/static/style.less" />
-	<link rel="icon" href="/static/images/favicon.png" />
-	<script src="/static/js/zepto.min.js"></script>
-	<script src="/static/js/base.js"></script>
-	<script src="/static/js/less-1.3.3.min.js"></script>
+    <title>Hat &mdash; Login</title>
+    <meta name="description" content="" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="static/style.css" media="screen" /> -->
+    <link rel="stylesheet/less" type="text/css" href="/static/style.less" />
+    <link rel="icon" href="/static/images/favicon.png" />
+    <script src="/static/js/zepto.min.js"></script>
+    <script src="/static/js/base.js"></script>
+    <script src="/static/js/less-1.3.3.min.js"></script>
 </head>
 <body class="login">
 
-	<a href="./landing.html" class="logo"></a>
-	<div class="wrapper">
-		<div class="inner-wrapper">
-			<div class="actualform">
-				<div class="form">
-					<form method="POST">
-						<input type="email" name="email" placeholder="Email">
-						<input type="password" name="password" placeholder="Password">
-						<input type="submit" class="button green" value="Log in">
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+    <a href="./landing.html" class="logo"></a>
+    <div class="wrapper">
+        <div class="inner-wrapper">
+            <div class="actualform">
+                <div class="form">
+                    <form method="POST">
+                        <input type="email" name="email" placeholder="Email">
+                        <input type="password" name="password" placeholder="Password">
+                        <input type="submit" class="button green" value="Log in">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div class="notification"></div>
-
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="notification show red">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
 </body>
 </html>

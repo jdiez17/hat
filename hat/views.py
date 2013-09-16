@@ -28,10 +28,9 @@ class LoginView(FlaskView):
         email = request.form['email']
         password = request.form['password']
 
-        print email, password
-
         u = User.login(email, password)
         if not u:
+            flash("Email or password incorrect")
             return redirect(url_for('LoginView:index'))
 
         login_user(u)

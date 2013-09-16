@@ -29,7 +29,10 @@
 		</div>
 	</div>
 
-    <div class="notification"></div>
-
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="notification show red">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
 </body>
 </html>
