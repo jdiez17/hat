@@ -10,7 +10,7 @@ class IndexView(FlaskView):
 
     def index(self):
         if not current_user.is_authenticated():
-            return redirect(url_for('LoginView:index'))
+            return render_template("landing.html") 
 
         links = current_user.links.all() 
         return render_template("index.html", links=links)
