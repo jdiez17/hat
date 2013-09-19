@@ -19,9 +19,9 @@
         <div class="section tags">
             <h1>Tags</h1>
             <ul>
-                <li>Cats</li>
-                <li>Cupcakes</li>
-                <li>Lorem ipsum</li>
+                {% for tag in tags %}
+                <li>{{ tag }}</li>
+                {% endfor %}
             </ul>
         </div>
 
@@ -50,12 +50,17 @@
                     <a href="#" class="save">Save</a>
                 </div>
             </li>
+            <li class="hidden template">
+                <a href="#" class="edit"><img src="static/images/edit.png"></a><h1><a class="title" href="#">Cupcake ipsum dolor sit amet gingerbread bear claw cupcake ipsum dolor sit amet</a></h1>
+                <h2><a href="#" class="link">http://cupcakeipsum.com/</a></h2>
+                <h3>lorem ipsum, cupcakes</h3>
+            </li>
           
             {% for link in links %}
             <li>
             <a href="#" class="edit"><img src="/static/images/edit.png"></a><h1><a href="{{ link.link }}">{{ link.title }}</a></h1>
                 <h2><a href="{{ link.link }}">{{ link.link }}</a></h2>
-                <h3>lorem ipsum, cupcakes</h3>
+                <h3>{{ ', '.join(link.tags) }}</h3>
             </li>
             {% endfor %}
         </ul>

@@ -58,18 +58,31 @@ class Link(db.Model):
 
     title = db.Column(db.Text)
     link = db.Column(db.Text)
+    _tags = db.Column(db.Text)
     date = db.Column(db.DateTime)
-    
+   
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('links', lazy='dynamic'))
 
-    def __init__(self, title, link, user):
+    @property
+    def tags(self):
+        return self._tags.split(',')
+
+    @tags.setter
+    def tags(self, val):
+        self._tags = ','.join(val)
+
+    def __init__(self, title, link, user, tags=[]):
         self.title = title
         self.link = link
         self.user = user
 
+        if len(tags):
+            map(lambda t: Tag.save(t, user), tags) # Create all the tags
+
+        self._tags = ','.join(tags)
         self.date = datetime.utcnow()
-   
+
     @classmethod
     def save(cls, *args):
         inst = cls(*args)
@@ -81,7 +94,28 @@ class Link(db.Model):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
+    label = db.Column(db.String(length=255))
 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('tags', lazy='dynamic'))
+
+    def __init__(self, label, user):
+        self.label = label
+        self.user = user
+
+    @classmethod
+    def save(cls, label, user):
+        if session.query(cls.query.filter_by(label=label, user=user).exists()).scalar():
+            return None # Don't create a Tag if it already exists
+
+        inst = cls(label, user)
+        session.add(inst)
+        session.commit()
+
+        return inst
+    
+    def __repr__(self):
+        return self.label
 
 @login_manager.user_loader
 def load_user(uid):

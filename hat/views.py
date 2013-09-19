@@ -4,6 +4,7 @@ from flask.ext.login import login_user, current_user
 from flask import render_template, request, redirect, url_for, flash
 
 from .objects import User, Link
+from .decorators import json_output
 
 class IndexView(FlaskView):
     route_base = '/'
@@ -12,13 +13,27 @@ class IndexView(FlaskView):
         if not current_user.is_authenticated():
             return render_template("landing.html") 
 
-        links = current_user.links.all() 
-        return render_template("index.html", links=links)
+        links = current_user.links.order_by(Link.id.desc()).all()
+        tags = current_user.tags.all()
+        return render_template("index.html", links=links, tags=tags)
 
 class LinkView(FlaskView):
-    def test(self):
-        l = Link.save('Caca', 'http://google.com', current_user)
-        return l.id
+    pass
+
+class APIView(FlaskView):
+    @json_output
+    @route("/link", methods=['POST'])
+    def link(self):
+        title = request.form.get("title")
+        url = request.form.get("url")
+        tags = request.form.getlist("tags[]")
+
+        l = Link.save(title, url, current_user, tags)
+
+        if l.id:
+            return {'status': 'ok', 'id': l.id}
+        else:
+            return {'status': 'bad_request'}, 400
 
 class LoginView(FlaskView):
     def index(self):
