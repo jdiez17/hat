@@ -26,6 +26,7 @@ Install the requirements
     pip install -r requirements.txt
 
 And fill in a config.py. Here's a template:
+
     class Config(object):
         DEBUG = False 
         TESTING = False 
