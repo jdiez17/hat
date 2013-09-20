@@ -3,7 +3,7 @@ from flask.ext.login import login_user, current_user
 
 from flask import render_template, request, redirect, url_for, flash
 
-from .objects import User, Link
+from .objects import User, Link, session
 from .decorators import json_output
 
 class IndexView(FlaskView):
@@ -50,6 +50,26 @@ class APIView(FlaskView):
         # At this point we're ready to delete
 
         link.delete()
+        return {'status': 'ok'}
+
+    @json_output
+    @route("/link/<id>", methods=['PUT'])
+    def link_put(self, id):
+        link = Link.query.get(id)
+
+        if not link:
+            return {'status': 'not_found'}, 404
+
+        if not current_user.is_owner_of(link):
+            return {'status': 'unauthorized'}, 401
+        
+        
+        link.title = request.form.get("title")
+        link.link = request.form.get("url")
+        link.tags = request.form.getlist("tags[]")
+
+        session.commit()
+
         return {'status': 'ok'}
 
 class LoginView(FlaskView):

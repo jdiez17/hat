@@ -72,18 +72,18 @@ class Link(db.Model):
         return self._tags.split(',')
 
     @tags.setter
-    def tags(self, val):
-        self._tags = ','.join(val)
+    def tags(self, tags):
+        if len(tags):
+            map(lambda t: Tag.save(t, self.user), tags) # Create all the tags
+
+        self._tags = ','.join(tags)
 
     def __init__(self, title, link, user, tags=[]):
         self.title = title
         self.link = link
         self.user = user
+        self.tags = tags
 
-        if len(tags):
-            map(lambda t: Tag.save(t, user), tags) # Create all the tags
-
-        self._tags = ','.join(tags)
         self.date = datetime.utcnow()
 
     @classmethod
