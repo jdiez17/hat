@@ -41,6 +41,10 @@ class User(db.Model):
             return u
         return None
 
+    @property
+    def tags(self):
+        return [tag.label for tag in self._tags]
+
     def is_authenticated(self):
         return True
 
@@ -56,7 +60,7 @@ class User(db.Model):
     def is_owner_of(self, obj):
         return obj.user_id == self.id
 
-tags = db.Table('tags_mapper', # Maps link <-> tag, many-to-many
+tags_mapper = db.Table('tags_mapper', # Maps link <-> tag, many-to-many
     db.Column('link_id', db.Integer, db.ForeignKey('link.id')),
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
 )
@@ -72,11 +76,11 @@ class Link(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('links', lazy='dynamic'))
 
-    _tags = db.relationship('Tag', secondary=tags, backref=db.backref('links', lazy='dynamic'))
+    _tags = db.relationship('Tag', secondary=tags_mapper, backref=db.backref('links', lazy='dynamic'))
 
     @property
     def tags(self):
-        return [repr(tag) for tag in self._tags]
+        return [tag.label for tag in self._tags]
 
     @tags.setter
     def tags(self, tags):
@@ -101,6 +105,14 @@ class Link(db.Model):
 
         return inst
 
+    def dict(self):
+        return {
+            'title': self.title,
+            'url': self.link,
+            'tags': self.tags,
+            'id': self.id
+        }
+
     def delete(self):
         # TODO: Do the tag thing
         session.delete(self)
@@ -112,7 +124,7 @@ class Tag(db.Model):
     label = db.Column(db.String(length=255))
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref=db.backref('tags', lazy='dynamic'))
+    user = db.relationship('User', backref=db.backref('_tags', lazy='dynamic'))
 
     def __init__(self, label, user):
         self.label = label

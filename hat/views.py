@@ -3,7 +3,7 @@ from flask.ext.login import login_user, current_user
 
 from flask import render_template, request, redirect, url_for, flash
 
-from .objects import User, Link, Tag, session
+from .objects import User, Link, Tag, tags_mapper, session
 from .decorators import json_output
 
 class IndexView(FlaskView):
@@ -14,7 +14,7 @@ class IndexView(FlaskView):
             return render_template("landing.html") 
 
         links = current_user.links.order_by(Link.id.desc()).all()
-        tags = current_user.tags.all()
+        tags = current_user.tags
         return render_template("index.html", links=links, tags=tags)
 
 class TagView(FlaskView):
@@ -24,8 +24,8 @@ class TagView(FlaskView):
             return redirect(url_for('IndexView:index'))
 
         links = tag.links.order_by(Link.id.desc()).all()
-        tags = current_user.tags.all()
-        return render_template("index.html", links=links, tags=tags)
+        tags = current_user.tags
+        return render_template("index.html", links=links, tags=tags, active_tag=tag.label)
 
 class APIView(FlaskView):
     @json_output
@@ -78,6 +78,32 @@ class APIView(FlaskView):
         session.commit()
 
         return {'status': 'ok'}
+
+    @json_output
+    @route("/link/by_tag/<tag>")
+    def link_tag(self, tag):
+        if tag == "*":
+            links = current_user.links
+        else:
+            ids = [tag] if "+" not in tag else tag.split("+")
+
+            # First, get the tags
+            ids = map(lambda t: Tag.query.filter_by(label=t).first(), ids) 
+            ids = filter(lambda t: t is not None, ids)
+            ids = map(lambda i: i.id, ids) 
+
+            # Then we get the links with a tag id in `tags`
+            links = Link.query. \
+                filter(Link.id == tags_mapper.c.link_id, tags_mapper.c.tag_id.in_(ids)). \
+                order_by(Link.id.desc())
+
+
+        links = map(lambda l: l.dict(), links)
+        return {'status': 'ok', 'links': links}
+
+    @json_output
+    def tags(self):
+        return {'status': 'ok', 'tags': current_user.tags}
 
 class LoginView(FlaskView):
     def index(self):

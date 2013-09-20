@@ -17,10 +17,12 @@
     <div class="sidebar">
         <input type="text" placeholder="Search">
         <div class="section tags">
-            <h1>Tags<a class="all" href="#">All</a></h1>
-            <ul>
+            <h1>Tags<a class="all {% if active_tag %}show{% endif %}" id="tags_all" href="/">All</a></h1>
+            <ul id="tag_list">
                 {% for tag in tags %}
-                <li><a href="{{ url_for('TagView:get', tag=tag) }}">{{ tag }}</a></li>
+                <li data-tag="{{ tag }}" {% if active_tag == tag %}class="active"{% endif %}>
+                <a onclick="toggle_tag(this.parentElement);" href="#{{ url_for('TagView:get', tag=tag) }}" title="{{ tag }}">{{ tag }}</a>
+                </li>
                 {% endfor %}
             </ul>
         </div>
@@ -54,7 +56,7 @@
                 </div>
             </li>
             <li class="hidden template">
-                <a href="#" class="edit"><img src="static/images/edit.png"></a><h1><a class="title" href="#">Cupcake ipsum dolor sit amet gingerbread bear claw cupcake ipsum dolor sit amet</a></h1>
+                <a href="#" class="edit"><img src="/static/images/edit.png"></a><h1><a class="title" href="#">Cupcake ipsum dolor sit amet gingerbread bear claw cupcake ipsum dolor sit amet</a></h1>
                 <h2><a href="#" class="link">http://cupcakeipsum.com/</a></h2>
                 <h3>lorem ipsum, cupcakes</h3>
             </li>
@@ -70,6 +72,11 @@
     </div>
 
     <div class="notification"></div>
-
+    
+    {% if active_tag %}
+    <script>
+        active_tags.push('{{ active_tag }}');
+    </script>
+    {% endif %}
 </body>
 </html>
