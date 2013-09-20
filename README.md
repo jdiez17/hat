@@ -1,4 +1,4 @@
-# hat
+# Hat
 Hat is an open source bookmark management tool.
 
 # Pretty picture
