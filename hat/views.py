@@ -35,6 +35,23 @@ class APIView(FlaskView):
         else:
             return {'status': 'bad_request'}, 400
 
+    @json_output
+    @route("/link", methods=['DELETE'])
+    def link_delete(self):
+        id = request.form.get("id")
+        link = Link.query.get(id)
+
+        if not link:
+            return {'status': 'not_found'}, 404
+
+        if not current_user.is_owner_of(link):
+            return {'status': 'unauthorized'}, 401
+
+        # At this point we're ready to delete
+
+        link.delete()
+        return {'status': 'ok'}
+
 class LoginView(FlaskView):
     def index(self):
         return render_template("login.html")

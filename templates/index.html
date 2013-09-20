@@ -57,9 +57,9 @@
             </li>
           
             {% for link in links %}
-            <li>
-            <a href="#" class="edit"><img src="/static/images/edit.png"></a><h1><a href="{{ link.link }}">{{ link.title }}</a></h1>
-                <h2><a href="{{ link.link }}">{{ link.link }}</a></h2>
+            <li data-id="{{ link.id }}">
+                <a onclick="edit_link(this.parentElement);" class="edit"><img src="/static/images/edit.png"></a><h1><a class="title" href="{{ link.link }}">{{ link.title }}</a></h1>
+                <h2><a class="url" href="{{ link.link }}">{{ link.link }}</a></h2>
                 <h3>{{ ', '.join(link.tags) }}</h3>
             </li>
             {% endfor %}

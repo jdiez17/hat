@@ -53,6 +53,9 @@ class User(db.Model):
     def get_id(self):
         return unicode(self.id)
 
+    def is_owner_of(self, obj):
+        return obj.user_id == self.id
+
 class Link(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -90,6 +93,11 @@ class Link(db.Model):
         session.commit()
 
         return inst
+
+    def delete(self):
+        # TODO: Do the tag thing
+        session.delete(self)
+        session.commit()
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
