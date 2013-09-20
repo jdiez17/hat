@@ -408,14 +408,27 @@ body.bookmarks{
 			}
 			li{
 				color: #fff;
-				margin-top: 32px;
+				margin-top: 30px;
 				cursor: pointer;
 				text-transform: capitalize;
 				width: 80%;
 
+				&:first-child{
+					margin-top: 32px;
+				}
+
+				a{
+					width: 80%;
+					white-space: nowrap;
+					overflow: hidden;
+					height: 18px;
+					display: block;
+					text-overflow: ellipsis;
+				}
+
 				&.active{
 					color: @green;
-					background: url(images/tick.png) right center no-repeat;
+					background: url(images/tick.png) right top no-repeat;
 					background-size: 16px;
 
 					/*&:before{
