@@ -356,6 +356,7 @@ body.bookmarks{
 		-moz-box-sizing: border-box;
 
 		input{
+			width: 80%;
 			margin: 0;
 			border: 0;
 			margin-top: 6px;
@@ -389,15 +390,33 @@ body.bookmarks{
 				font-weight: 700;
 				text-transform: uppercase;
 				color: rgba(255,255,255,.2);
+				width: 80%;
+
+				.all{
+					float: right;
+					font-weight: 400;
+					text-transform: none;
+					display: none;
+
+					&.show{
+						display: block;
+					}
+					&:hover{
+						color: rgba(255,255,255,.4);
+					}
+				}
 			}
 			li{
 				color: #fff;
 				margin-top: 32px;
 				cursor: pointer;
 				text-transform: capitalize;
+				width: 80%;
 
 				&.active{
 					color: @green;
+					background: url(images/tick.png) right center no-repeat;
+					background-size: 16px;
 
 					/*&:before{
 						content: "";

@@ -17,7 +17,7 @@
     <div class="sidebar">
         <input type="text" placeholder="Search">
         <div class="section tags">
-            <h1>Tags</h1>
+            <h1>Tags<a class="all" href="#">All</a></h1>
             <ul>
                 {% for tag in tags %}
                 <li><a href="{{ url_for('TagView:get', tag=tag) }}">{{ tag }}</a></li>
