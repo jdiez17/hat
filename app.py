@@ -3,7 +3,7 @@ from flask import Flask, render_template, url_for, redirect
 from flaskext.bcrypt import Bcrypt
 from flask.ext.login import logout_user, login_required
 
-from hat.views import LoginView, RegisterView, IndexView, LinkView, APIView
+from hat.views import LoginView, RegisterView, IndexView, TagView, APIView
 from hat.objects import db, login_manager
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ login_manager.init_app(app)
 IndexView.register(app)
 LoginView.register(app)
 RegisterView.register(app)
-LinkView.register(app)
+TagView.register(app)
 APIView.register(app)
 
 @app.route("/logout")

@@ -56,27 +56,34 @@ class User(db.Model):
     def is_owner_of(self, obj):
         return obj.user_id == self.id
 
+tags = db.Table('tags_mapper', # Maps link <-> tag, many-to-many
+    db.Column('link_id', db.Integer, db.ForeignKey('link.id')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+)
+
 class Link(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     title = db.Column(db.Text)
     link = db.Column(db.Text)
-    _tags = db.Column(db.Text)
+    #_tags = db.Column(db.Text)
     date = db.Column(db.DateTime)
    
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('links', lazy='dynamic'))
 
+    _tags = db.relationship('Tag', secondary=tags, backref=db.backref('links', lazy='dynamic'))
+
     @property
     def tags(self):
-        return self._tags.split(',')
+        return [repr(tag) for tag in self._tags]
 
     @tags.setter
     def tags(self, tags):
         if len(tags):
-            map(lambda t: Tag.save(t, self.user), tags) # Create all the tags
+            tags = map(lambda t: Tag.save(t, self.user), tags) # Create all the tags
 
-        self._tags = ','.join(tags)
+        self._tags = tags 
 
     def __init__(self, title, link, user, tags=[]):
         self.title = title
@@ -113,8 +120,9 @@ class Tag(db.Model):
 
     @classmethod
     def save(cls, label, user):
-        if session.query(cls.query.filter_by(label=label, user=user).exists()).scalar():
-            return None # Don't create a Tag if it already exists
+        inst = cls.query.filter_by(label=label, user=user).first()
+        if inst:
+            return inst # Don't create a Tag if it already exists
 
         inst = cls(label, user)
         session.add(inst)

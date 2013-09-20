@@ -3,7 +3,7 @@ from flask.ext.login import login_user, current_user
 
 from flask import render_template, request, redirect, url_for, flash
 
-from .objects import User, Link, session
+from .objects import User, Link, Tag, session
 from .decorators import json_output
 
 class IndexView(FlaskView):
@@ -17,8 +17,15 @@ class IndexView(FlaskView):
         tags = current_user.tags.all()
         return render_template("index.html", links=links, tags=tags)
 
-class LinkView(FlaskView):
-    pass
+class TagView(FlaskView):
+    def get(self, tag):
+        tag = Tag.query.filter_by(label=tag, user=current_user).first()
+        if not tag:
+            return redirect(url_for('IndexView:index'))
+
+        links = tag.links.order_by(Link.id.desc()).all()
+        tags = current_user.tags.all()
+        return render_template("index.html", links=links, tags=tags)
 
 class APIView(FlaskView):
     @json_output
