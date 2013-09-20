@@ -6,13 +6,21 @@ String.prototype.tagsplit = function() {
     });
 };
 
-function do_add_url() {
+function url_edit_element(url, title, tags) {
     var template = $(".editable");
     var populate = template.clone().addClass("visible");
-    populate.find(".url").val($("#url").val());
 
-    template.parent().prepend(populate);
-    populate.find(".title").focus();
+    populate.find(".url").val(url);
+    populate.find(".title").val(title);
+    populate.find(".tags").val(tags.join(', '));
+
+
+    return populate;
+}
+
+function do_add_url() {
+    var template = $(".editable");
+    var populate = url_edit_element($("#url").val(), "", []);
 
     populate.keypress(function(e) {
         if(e.which == 13) {
@@ -25,6 +33,34 @@ function do_add_url() {
     populate.find(".save").click(function(e) {
         save_link(populate);
     });
+
+    template.parent().prepend(populate);
+    populate.find(".title").focus();
+}
+
+function edit_link(elm) {
+    var orig = $(elm);
+    var link = {
+        'url': orig.find(".url").text(),
+        'tags': orig.find("h3").text().tagsplit(),
+        'title': orig.find(".title").text()
+    };
+    var edit_element = url_edit_element(link['url'], link['title'], link['tags']);
+
+    edit_element.find(".delete").click(function(e) {
+        $.ajax({
+            'type': 'DELETE',
+            'url': '/api/link',
+            'data': {'id': orig.data('id')},
+
+            'success': function(data, status, xhr) {
+                edit_element.remove();
+            }
+        });
+    });
+
+    orig.replaceWith(edit_element);
+
 }
 
 function save_link(orig) {
@@ -32,7 +68,7 @@ function save_link(orig) {
         'url': orig.find(".url").val(),
         'tags': orig.find(".tags").val().tagsplit(),
         'title': orig.find(".title").val()
-    };
+    }; 
 
     $.post("/api/link", link, function(response) {
         obj = JSON.parse(response);
@@ -52,11 +88,13 @@ function save_link(orig) {
             populate.find("h3")
                 .text(link['tags'].join(', '));
 
-            populate.removeClass("hidden template");
-            populate.attr('id', 'bookmark_' + obj['id']);
+            populate.find(".edit")
+                .click(function() { edit_link(populate[0]); });
 
-            template.parent().prepend(populate);
-            orig.remove();
+            populate.removeClass("hidden template");
+            populate.data('id', obj['id']);
+
+            orig.replaceWith(populate);
         }
     });
 
