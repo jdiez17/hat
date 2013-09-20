@@ -154,7 +154,7 @@ function toggle_tag(elm) {
                 collection[i].remove();
         for(i = obj['links'].length - 1; i >= 0; i--) { // reverse
             var link = obj['links'][i];
-            $(".bookmarks").append(show_entry(link, link['id']));
+            $("#bookmark_list").append(show_entry(link, link['id']));
         }
     });
 
