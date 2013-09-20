@@ -134,10 +134,10 @@ function toggle_tag(elm) {
 
     if(idx != -1) { // tag in active_tags
         active_tags.remove(idx);
-        $("li[data-tag='" + tag + "']").removeClass("active"); // TODO: Actually fetch links
+        $("li[data-tag='" + tag + "']").removeClass("active");
     } else {
         active_tags.push(tag);
-        $("li[data-tag='" + tag + "']").addClass("active"); // TODO: Actually fetch links
+        $("li[data-tag='" + tag + "']").addClass("active");
     }
 
     if(active_tags.length == 0) {
