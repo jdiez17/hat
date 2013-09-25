@@ -3,6 +3,8 @@ from flask.ext.login import login_user, current_user
 
 from flask import render_template, request, redirect, url_for, flash
 
+from string import digits
+
 from .objects import User, Link, Tag, tags_mapper, session
 from .decorators import json_output
 
@@ -130,8 +132,9 @@ class RegisterView(FlaskView):
         password = request.form['password']
 
         validation = {
-            "You must provide an email": len(email),
-            "You must provide a password": len(password),
+            "You must provide an email": '@' in email and '.' in email,
+            "You must provide a password": len(password) >= 8 and \
+                    not all(char in digits for char in password)
         }
 
         valid = True 
