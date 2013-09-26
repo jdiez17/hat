@@ -114,8 +114,10 @@ class Link(db.Model):
         }
 
     def delete(self):
-        # TODO: Do the tag thing
+        empty_tags = filter(lambda tag: tag.links.count() <= 1, self.tags)
         session.delete(self)
+        for tag in empty_tags:
+            session.delete(tag)
         session.commit()
 
 class Tag(db.Model):
