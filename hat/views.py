@@ -130,21 +130,49 @@ class RegisterView(FlaskView):
     def post(self):
         email = request.form['email']
         password = request.form['password']
-
-        validation = {
-            "You must provide an email": '@' in email and '.' in email,
-            "You must provide a password": len(password) >= 8 and \
-                    not all(char in digits for char in password)
+        validators = {
+            ("email_address_invalid",
+             '@' in email and '.' in email),
+            ("password_too_short",
+             len(password) >= 8),
+            ("password_needs_digits",
+             any(char in digits for char in password))
+            ("password_needs_nondigits",
+             not all(char in digits for char in password))
         }
 
-        valid = True 
-        for k in validation:
-            v = validation[k]
-            if not v:
-                valid = False
-                flash(k)
+        validation_errors = frozenset(error for error, valid in validators
+                             if not valid)
 
-        if not valid:
+        error_messages = {
+            frozenset(['password_too_short']): 
+                '', 
+            frozenset(['email_address_invalid', 'password_needs_digits']): 
+                '', 
+            frozenset(['password_needs_nondigits']): 
+                '', 
+            frozenset(['email_address_invalid']): 
+                '', 
+            frozenset(['email_address_invalid', 'password_needs_nondigits', 
+                       'password_too_short']): 
+                '', 
+            frozenset(['email_address_invalid', 'password_too_short']): 
+                '', 
+            frozenset(['password_needs_nondigits', 'password_too_short']): 
+                '',
+            frozenset(['email_address_invalid', 'password_too_short', 
+                       'password_needs_digits']): 
+                '', 
+            frozenset(['password_too_short', 'password_needs_digits']): 
+                '', 
+            frozenset(['password_needs_digits']): 
+                '', 
+            frozenset(['email_address_invalid', 'password_needs_nondigits']): 
+                ''
+        }
+
+        if validation_errors:
+            flash(error_messages[validation_errors])
             return redirect(url_for('RegisterView:index'))
 
         u = User.register(email, password)
