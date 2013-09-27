@@ -34,7 +34,7 @@ And fill in a config.py. Here's a template:
         SQLALCHEMY_DATABASE_URI = "mysql://hat:password@host/database"
         SECRET_KEY = "correct horse battery staple"
 
-If everything went according to plan, you will be able to run `app.py`:
+If everything went according to keikaku, you will be able to run `app.py`:
 
     $ python app.py 
     * Running on http://0.0.0.0:8080/
