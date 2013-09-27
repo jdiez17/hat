@@ -130,21 +130,20 @@ class RegisterView(FlaskView):
     def post(self):
         email = request.form['email']
         password = request.form['password']
-
-        validation = {
-            "You must provide an email": '@' in email and '.' in email,
-            "You must provide a password": len(password) >= 8 and \
-                    not all(char in digits for char in password)
+        validators = {
+            ("email_address_invalid",
+             '@' in email and '.' in email),
+            ("password_too_short",
+             len(password) >= 8),
+            ("password_needs_digits",
+             any(char in digits for char in password))
+            ("password_needs_nondigits",
+             not all(char in digits for char in password))
         }
-
-        valid = True 
-        for k in validation:
-            v = validation[k]
-            if not v:
-                valid = False
-                flash(k)
-
-        if not valid:
+        validation_errors = {error for error, valid in validators
+                             if not valid}
+        if validation_errors:
+            flash(error_messages[validation_errors])
             return redirect(url_for('RegisterView:index'))
 
         u = User.register(email, password)
