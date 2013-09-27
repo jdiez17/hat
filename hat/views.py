@@ -140,8 +140,37 @@ class RegisterView(FlaskView):
             ("password_needs_nondigits",
              not all(char in digits for char in password))
         }
-        validation_errors = {error for error, valid in validators
-                             if not valid}
+
+        validation_errors = frozenset(error for error, valid in validators
+                             if not valid)
+
+        error_messages = {
+            frozenset(['password_too_short']): 
+                '', 
+            frozenset(['email_address_invalid', 'password_needs_digits']): 
+                '', 
+            frozenset(['password_needs_nondigits']): 
+                '', 
+            frozenset(['email_address_invalid']): 
+                '', 
+            frozenset(['email_address_invalid', 'password_needs_nondigits', 
+                       'password_too_short']): 
+                '', 
+            frozenset(['email_address_invalid', 'password_too_short']): 
+                '', 
+            frozenset(['password_needs_nondigits', 'password_too_short']): 
+                '',
+            frozenset(['email_address_invalid', 'password_too_short', 
+                       'password_needs_digits']): 
+                '', 
+            frozenset(['password_too_short', 'password_needs_digits']): 
+                '', 
+            frozenset(['password_needs_digits']): 
+                '', 
+            frozenset(['email_address_invalid', 'password_needs_nondigits']): 
+                ''
+        }
+
         if validation_errors:
             flash(error_messages[validation_errors])
             return redirect(url_for('RegisterView:index'))
